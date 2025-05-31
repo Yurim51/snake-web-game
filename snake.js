@@ -5,6 +5,8 @@ let count = 0;
 let snake = [{x: 160, y: 200}];
 let dx = grid;
 let dy = 0;
+let nextDx = grid;
+let nextDy = 0;
 let food = { x: 320, y: 200 };
 let score = 0;
 
@@ -16,6 +18,8 @@ function resetGame() {
     snake = [{x: 160, y: 200}];
     dx = grid;
     dy = 0;
+    nextDx = grid;
+    nextDy = 0;
     food = { x: getRandomInt(0, 20) * grid, y: getRandomInt(0, 20) * grid };
     score = 0;
 }
@@ -25,6 +29,10 @@ function gameLoop() {
     if (++count < 4) return;
     count = 0;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Apply next direction
+    dx = nextDx;
+    dy = nextDy;
 
     // Move snake
     let head = { x: snake[0].x + dx, y: snake[0].y + dy };
@@ -66,13 +74,13 @@ function gameLoop() {
 
 document.addEventListener('keydown', function(e) {
     if (e.key === 'ArrowLeft' && dx === 0) {
-        dx = -grid; dy = 0;
+        nextDx = -grid; nextDy = 0;
     } else if (e.key === 'ArrowUp' && dy === 0) {
-        dx = 0; dy = -grid;
+        nextDx = 0; nextDy = -grid;
     } else if (e.key === 'ArrowRight' && dx === 0) {
-        dx = grid; dy = 0;
+        nextDx = grid; nextDy = 0;
     } else if (e.key === 'ArrowDown' && dy === 0) {
-        dx = 0; dy = grid;
+        nextDx = 0; nextDy = grid;
     }
 });
 
