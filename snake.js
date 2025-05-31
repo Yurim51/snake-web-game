@@ -169,7 +169,7 @@ function drawGrass(x, y) {
     for (let i = 0; i < 5; i++) {
         ctx.beginPath();
         ctx.moveTo(0, 0);
-        ctx.lineTo(Math.cos(Math.PI/5*i-Math.PI/2)*8, Math.sin(Math.PI/5*i-Math.PI/2)*12);
+        ctx.lineTo(Math.cos(Math.PI/5*i+Math.PI/2)*8, Math.sin(Math.PI/5*i+Math.PI/2)*12);
         ctx.stroke();
     }
     ctx.restore();
