@@ -15,6 +15,7 @@
         <input id="snakeName" type="text" maxlength="12" style="font-size:1.1em;padding:4px;" autofocus />
         <button onclick="setSnakeName()" style="margin-top:10px;font-size:1.1em;">시작</button>
     </div>
+    <div id="nicknameBox" style="width:400px;margin:0 auto 8px auto;text-align:center;font-size:1.2em;color:#222;font-weight:bold;"></div>
     <canvas id="gameCanvas" width="400" height="400"></canvas>
     <script src="snake.js"></script>
     <script>
@@ -24,12 +25,28 @@
         localStorage.setItem('snakeName', name);
         document.getElementById('nameModal').style.display = 'none';
     }
+    function showNickname() {
+        var name = localStorage.getItem('snakeName') || 'Snake';
+        document.getElementById('nicknameBox').textContent = name + '이 게임 중';
+    }
     window.onload = function() {
         if(!localStorage.getItem('snakeName')) {
             document.getElementById('nameModal').style.display = 'flex';
         } else {
             document.getElementById('nameModal').style.display = 'none';
         }
+        showNickname();
+    }
+    document.getElementById('snakeName').addEventListener('keydown', function(e) {
+        if(e.key === 'Enter') setSnakeName();
+    });
+    // 이름이 바뀌면 바로 반영
+    window.setSnakeName = function() {
+        var name = document.getElementById('snakeName').value.trim();
+        if(!name) name = 'Snake';
+        localStorage.setItem('snakeName', name);
+        document.getElementById('nameModal').style.display = 'none';
+        showNickname();
     }
     </script>
 </body>
