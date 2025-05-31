@@ -33,6 +33,8 @@ function gameLoop() {
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     // Draw grass patches
     drawGrassPatches();
+    // Draw grid lines
+    drawGridLines();
 
     // 랜덤 방향 결정
     const dir = getRandomDirection(dx, dy);
@@ -76,7 +78,7 @@ function gameLoop() {
     }
 
     // Draw score
-    ctx.fillStyle = '#fff';
+    ctx.fillStyle = '#222';
     ctx.font = '16px Arial';
     ctx.fillText('Score: ' + score, 10, 20);
 }
@@ -167,7 +169,26 @@ function drawGrass(x, y) {
     for (let i = 0; i < 5; i++) {
         ctx.beginPath();
         ctx.moveTo(0, 0);
-        ctx.lineTo(Math.cos(Math.PI/5*i-Math.PI/2)*8, Math.sin(Math.PI/5*i-Math.PI/2)*12);
+        ctx.lineTo(Math.cos(Math.PI/5*i)*8, Math.sin(Math.PI/5*i)*12);
+        ctx.stroke();
+    }
+    ctx.restore();
+}
+
+function drawGridLines() {
+    ctx.save();
+    ctx.strokeStyle = 'rgba(0,0,0,0.08)';
+    ctx.lineWidth = 1;
+    for (let x = grid; x < canvas.width; x += grid) {
+        ctx.beginPath();
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, canvas.height);
+        ctx.stroke();
+    }
+    for (let y = grid; y < canvas.height; y += grid) {
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(canvas.width, y);
         ctx.stroke();
     }
     ctx.restore();
