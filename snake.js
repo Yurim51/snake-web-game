@@ -30,11 +30,9 @@ function gameLoop() {
     count = 0;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    // Apply next direction only if not reversing
-    if ((nextDx !== -dx || nextDy !== -dy) && (nextDx !== 0 || nextDy !== 0)) {
-        dx = nextDx;
-        dy = nextDy;
-    }
+    // Apply next direction
+    dx = nextDx;
+    dy = nextDy;
 
     // Move snake
     let head = { x: snake[0].x + dx, y: snake[0].y + dy };
