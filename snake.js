@@ -113,7 +113,7 @@ function drawSnakeHead(x, y, dx, dy) {
     ctx.closePath();
     ctx.fill();
     // Eyes
-    ctx.fillStyle = '#fff';
+    ctx.fillStyle = '#222';
     ctx.beginPath();
     ctx.arc(grid/6, -grid/6, grid/10, 0, Math.PI*2);
     ctx.arc(grid/6, grid/6, grid/10, 0, Math.PI*2);
@@ -169,7 +169,7 @@ function drawGrass(x, y) {
     for (let i = 0; i < 5; i++) {
         ctx.beginPath();
         ctx.moveTo(0, 0);
-        ctx.lineTo(Math.cos(Math.PI/5*i)*8, Math.sin(Math.PI/5*i)*12);
+        ctx.lineTo(Math.cos(Math.PI/5*i-Math.PI/2)*8, Math.sin(Math.PI/5*i-Math.PI/2)*12);
         ctx.stroke();
     }
     ctx.restore();
