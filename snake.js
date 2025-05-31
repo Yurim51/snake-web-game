@@ -30,7 +30,10 @@ function gameLoop() {
     count = 0;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    // Apply next direction
+    // 랜덤 방향 결정
+    const dir = getRandomDirection(dx, dy);
+    nextDx = dir.dx;
+    nextDy = dir.dy;
     dx = nextDx;
     dy = nextDy;
 
@@ -47,14 +50,16 @@ function gameLoop() {
         snake.pop();
     }
 
-    // Draw food
-    ctx.fillStyle = 'red';
-    ctx.fillRect(food.x, food.y, grid-2, grid-2);
+    // Draw food (apple)
+    drawApple(food.x, food.y);
 
     // Draw snake
-    ctx.fillStyle = '#0f0';
     snake.forEach((segment, i) => {
-        ctx.fillRect(segment.x, segment.y, grid-2, grid-2);
+        if (i === 0) {
+            drawSnakeHead(segment.x, segment.y, dx, dy);
+        } else {
+            drawSnakeBody(segment.x, segment.y);
+        }
         // Check collision with self
         if (i !== 0 && segment.x === head.x && segment.y === head.y) {
             resetGame();
@@ -72,16 +77,72 @@ function gameLoop() {
     ctx.fillText('Score: ' + score, 10, 20);
 }
 
-document.addEventListener('keydown', function(e) {
-    if (e.key === 'ArrowLeft' && dx !== grid) {
-        nextDx = -grid; nextDy = 0;
-    } else if (e.key === 'ArrowUp' && dy !== grid) {
-        nextDx = 0; nextDy = -grid;
-    } else if (e.key === 'ArrowRight' && dx !== -grid) {
-        nextDx = grid; nextDy = 0;
-    } else if (e.key === 'ArrowDown' && dy !== -grid) {
-        nextDx = 0; nextDy = grid;
-    }
-});
+function getRandomDirection(dx, dy) {
+    // 4방향 중 현재 진행방향의 반대가 아닌 방향만 선택
+    const directions = [
+        {dx: grid, dy: 0},   // 오른쪽
+        {dx: -grid, dy: 0},  // 왼쪽
+        {dx: 0, dy: grid},   // 아래
+        {dx: 0, dy: -grid},  // 위
+    ];
+    // 현재 진행방향의 반대는 제외
+    const valid = directions.filter(dir => !(dir.dx === -dx && dir.dy === -dy));
+    return valid[Math.floor(Math.random() * valid.length)];
+}
+
+// Draw snake head (face)
+function drawSnakeHead(x, y, dx, dy) {
+    ctx.save();
+    ctx.translate(x + grid/2, y + grid/2);
+    let angle = 0;
+    if (dx === grid) angle = 0;
+    else if (dx === -grid) angle = Math.PI;
+    else if (dy === grid) angle = Math.PI/2;
+    else if (dy === -grid) angle = -Math.PI/2;
+    ctx.rotate(angle);
+    ctx.fillStyle = '#0f0';
+    ctx.beginPath();
+    ctx.arc(0, 0, grid/2-1, Math.PI*0.15, Math.PI*1.85, false);
+    ctx.lineTo(0, 0);
+    ctx.closePath();
+    ctx.fill();
+    // Eyes
+    ctx.fillStyle = '#fff';
+    ctx.beginPath();
+    ctx.arc(grid/6, -grid/6, grid/10, 0, Math.PI*2);
+    ctx.arc(grid/6, grid/6, grid/10, 0, Math.PI*2);
+    ctx.fill();
+    ctx.restore();
+}
+
+// Draw snake body
+function drawSnakeBody(x, y) {
+    ctx.fillStyle = '#0f0';
+    ctx.fillRect(x, y, grid-2, grid-2);
+}
+
+// Draw apple (food)
+function drawApple(x, y) {
+    ctx.save();
+    ctx.translate(x + grid/2, y + grid/2);
+    // Apple body
+    ctx.fillStyle = 'red';
+    ctx.beginPath();
+    ctx.arc(0, 0, grid/2-2, 0, Math.PI*2);
+    ctx.fill();
+    // Apple highlight
+    ctx.fillStyle = 'rgba(255,255,255,0.3)';
+    ctx.beginPath();
+    ctx.arc(-grid/6, -grid/6, grid/8, 0, Math.PI*2);
+    ctx.fill();
+    // Apple stem
+    ctx.strokeStyle = '#654321';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(0, -grid/2+3);
+    ctx.lineTo(0, -grid/2+8);
+    ctx.stroke();
+    ctx.restore();
+}
 
 gameLoop();
