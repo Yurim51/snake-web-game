@@ -26,7 +26,7 @@ function resetGame() {
 
 function gameLoop() {
     requestAnimationFrame(gameLoop);
-    if (++count < 4) return;
+    if (++count < 8) return;
     count = 0;
     // Draw background
     ctx.fillStyle = '#FFF9E3';
@@ -36,10 +36,7 @@ function gameLoop() {
     // Draw grid lines
     drawGridLines();
 
-    // 랜덤 방향 결정
-    const dir = getRandomDirection(dx, dy);
-    nextDx = dir.dx;
-    nextDy = dir.dy;
+    // Apply next direction from user input
     dx = nextDx;
     dy = nextDy;
 
@@ -193,5 +190,17 @@ function drawGridLines() {
     }
     ctx.restore();
 }
+
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'ArrowLeft' && dx !== grid) {
+        nextDx = -grid; nextDy = 0;
+    } else if (e.key === 'ArrowUp' && dy !== grid) {
+        nextDx = 0; nextDy = -grid;
+    } else if (e.key === 'ArrowRight' && dx !== -grid) {
+        nextDx = grid; nextDy = 0;
+    } else if (e.key === 'ArrowDown' && dy !== -grid) {
+        nextDx = 0; nextDy = grid;
+    }
+});
 
 gameLoop();
