@@ -121,7 +121,9 @@ function drawSnakeHead(x, y, dx, dy) {
 // Draw snake body
 function drawSnakeBody(x, y) {
     ctx.fillStyle = '#0f0';
-    ctx.fillRect(x, y, grid-2, grid-2);
+    ctx.beginPath();
+    ctx.arc(x + grid/2, y + grid/2, (grid-2)/2, 0, Math.PI*2);
+    ctx.fill();
 }
 
 // Draw apple (food)
