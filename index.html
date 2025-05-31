@@ -10,7 +10,27 @@
     </style>
 </head>
 <body>
+    <div id="nameModal" style="position:fixed;left:0;top:0;width:100vw;height:100vh;z-index:10;background:rgba(255,249,227,0.95);display:flex;flex-direction:column;align-items:center;justify-content:center;">
+        <label for="snakeName" style="font-size:1.2em;margin-bottom:10px;">뱀의 이름을 입력하세요:</label>
+        <input id="snakeName" type="text" maxlength="12" style="font-size:1.1em;padding:4px;" autofocus />
+        <button onclick="setSnakeName()" style="margin-top:10px;font-size:1.1em;">시작</button>
+    </div>
     <canvas id="gameCanvas" width="400" height="400"></canvas>
     <script src="snake.js"></script>
+    <script>
+    function setSnakeName() {
+        var name = document.getElementById('snakeName').value.trim();
+        if(!name) name = 'Snake';
+        localStorage.setItem('snakeName', name);
+        document.getElementById('nameModal').style.display = 'none';
+    }
+    window.onload = function() {
+        if(!localStorage.getItem('snakeName')) {
+            document.getElementById('nameModal').style.display = 'flex';
+        } else {
+            document.getElementById('nameModal').style.display = 'none';
+        }
+    }
+    </script>
 </body>
 </html>
