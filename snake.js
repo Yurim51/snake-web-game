@@ -28,7 +28,11 @@ function gameLoop() {
     requestAnimationFrame(gameLoop);
     if (++count < 4) return;
     count = 0;
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    // Draw background
+    ctx.fillStyle = '#FFF9E3';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    // Draw grass patches
+    drawGrassPatches();
 
     // 랜덤 방향 결정
     const dir = getRandomDirection(dx, dy);
@@ -142,6 +146,30 @@ function drawApple(x, y) {
     ctx.moveTo(0, -grid/2+3);
     ctx.lineTo(0, -grid/2+8);
     ctx.stroke();
+    ctx.restore();
+}
+
+// Draw random grass patches
+function drawGrassPatches() {
+    // 고정된 위치에 잔디 여러 개
+    const grassList = [
+        {x: 40, y: 60}, {x: 120, y: 300}, {x: 300, y: 80},
+        {x: 200, y: 200}, {x: 350, y: 350}, {x: 70, y: 370}
+    ];
+    grassList.forEach(pos => drawGrass(pos.x, pos.y));
+}
+
+function drawGrass(x, y) {
+    ctx.save();
+    ctx.translate(x, y);
+    ctx.strokeStyle = '#3CB371';
+    ctx.lineWidth = 2;
+    for (let i = 0; i < 5; i++) {
+        ctx.beginPath();
+        ctx.moveTo(0, 0);
+        ctx.lineTo(Math.cos(Math.PI/5*i-Math.PI/2)*8, Math.sin(Math.PI/5*i-Math.PI/2)*12);
+        ctx.stroke();
+    }
     ctx.restore();
 }
 
